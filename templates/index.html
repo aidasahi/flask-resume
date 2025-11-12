@@ -19,7 +19,28 @@
     </style>
 </head>
 <body>
-    <h1>سلام آیدا 💖</h1>
-    <p>به اولین صفحه‌ی Flask خودت خوش اومدی!</p>
+    <h1>سلام آیدا هستم 💖</h1>
+    <p>به سایت رزومه‌ی من خوش آمدید!</p>
+
+    <h2>رزومه:</h2>
+    <ul id="resume"></ul>
+
+    <script>
+    fetch("/api/resume")
+        .then(response => response.json())
+        .then(data => {
+            const resumeList = document.getElementById("resume");
+            resumeList.innerHTML = `
+                <li>ایمیل: ${data.email}</li>
+                <li>تحصیلات:
+                    <ul>
+                        ${data.education.map(ed => `<li>${ed.degree} - ${ed.university} </li>`).join('')}
+                    </ul>
+                </li>
+                <li>مهارت‌ها: ${data.skills.join(', ')}</li>
+
+          `;
+        });
+    </script>
 </body>
 </html>
