@@ -1,46 +1,384 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>سایت من با Flask</title>
-    <style>
-        body {
-            font-family: "Vazirmatn", sans-serif;
-            background-color: #f2f2f2;
-            text-align: center;
-            padding-top: 100px;
-        }
-        h1 {
-            color: #e91e63;
-        }
-        p {
-            color: #333;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aida Asgharzadeh Donighi - Resume</title>
+    <!-- Link to CSS file in static folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>سلام آیدا هستم 💖</h1>
-    <p>به سایت رزومه‌ی من خوش آمدید!</p>
 
-    <h2>رزومه:</h2>
-    <ul id="resume"></ul>
+    <!-- ========== FLASH MESSAGES ========== -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                        <button class="flash-close" onclick="this.parentElement.remove()">×</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
-    <script>
-    fetch("/api/resume")
-        .then(response => response.json())
-        .then(data => {
-            const resumeList = document.getElementById("resume");
-            resumeList.innerHTML = `
-                <li>ایمیل: ${data.email}</li>
-                <li>تحصیلات:
+    <!-- ========== HERO SECTION ========== -->
+    <div class="hero">
+        <div class="hero-content">
+            <!-- Profile Photo (placeholder - you'll add your photo later) -->
+            <div class="profile-photo">
+                <img src="{{ url_for('static', filename='images/photo.jpg') }}" alt="Aida Asgharzadeh">
+            </div>
+            
+            <h1>AIDA ASGHARZADEH DONIGHI</h1>
+            
+            <div class="tagline">Math • Code • Curiosity</div>
+            
+            <div class="birth-location">
+                Born: May 24, 1998 | Tehran, Iran
+            </div>
+            
+            <div class="contact-links">
+                <a href="mailto:aida.sahi@gmail.com">📧 Email</a>
+                <a href="https://github.com/aidasahi" target="_blank">💻 GitHub</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MAIN CONTAINER ========== -->
+    <div class="container">
+
+        <!-- ========== ABOUT ME SECTION ========== -->
+        <section id="about">
+            <h2 class="section-title">Who I Am</h2>
+            <div class="about-content">
+                <p>Mathematics always felt like discovering a hidden language—one that the universe itself seemed to speak. I fell in love with it in school, not just for the right answers, but for the questions it made me ask. After studying Chemical Engineering, I realized my heart was pulling me elsewhere, so I followed it back to math. I graduated with honors in Applied Mathematics, and it felt like coming home.</p>
+                
+                <p>But here's the thing about math: it's both an art and a logic puzzle. You need rules, yes—but you also need imagination. You need to dream up abstract worlds that somehow, beautifully, still make sense. That's what drew me to computer science. Coding feels the same way. There's structure, there's creativity, and there's that incredible moment when you see your solution come to life.</p>
+                
+                <p>I've always believed life is a mix of realities we can't change and possibilities we can create. I love teaching—working with students taught me as much as I taught them. I love poetry, painting, classical novels, and the old values that ground us. But I'm also fascinated by today's technology, by the pace of change, by the chance to build something that matters.</p>
+                
+                <p>So here I am: learning, exploring, building. I'm diving into machine learning and web development because I want to solve real problems—in education, healthcare, finance. I want to blend theory with impact, logic with art. And maybe, one day, create something that makes a difference.</p>
+            </div>
+        </section>
+
+        <!-- ========== EDUCATION SECTION (ACCORDION) ========== -->
+        <section id="education">
+            <h2 class="section-title">Education</h2>
+            
+            <!-- Education Item 1 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🎓 M.Sc. in Computer Science</div>
+                        <div class="accordion-subtitle">Sharif University of Technology | 2025 – Present</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
                     <ul>
-                        ${data.education.map(ed => `<li>${ed.degree} - ${ed.university} </li>`).join('')}
+                        <li>Admitted through the <strong>Exceptional Talents Program</strong></li>
+                        <li>Currently exploring: Machine Learning, Data Science, Algorithm Design</li>
+                        <li>Building foundations in both theory and application</li>
                     </ul>
-                </li>
-                <li>مهارت‌ها: ${data.skills.join(', ')}</li>
+                </div>
+            </div>
 
-          `;
-        });
-    </script>
+            <!-- Education Item 2 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🎓 B.Sc. in Applied Mathematics</div>
+                        <div class="accordion-subtitle">Shahid Beheshti University | 2022 – 2024</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Graduated with <strong>Grade A (Excellent)</strong></li>
+                        <li>Relevant coursework: Data Structures & Algorithms, Artificial Intelligence, Advanced Programming (Python), Statistics, Optimization</li>
+                        <li>This degree felt like finally finding where I belonged—where logic meets beauty</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Education Item 3 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🎓 B.Sc. in Chemical Engineering</div>
+                        <div class="accordion-subtitle">Amirkabir University of Technology (Tehran Polytechnic) | 2016 – 2020</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>My first step into university life</li>
+                        <li>Learned discipline, problem-solving, and team collaboration</li>
+                        <li>Realized my true passion lay elsewhere—and had the courage to change paths</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== EXPERIENCE SECTION (ACCORDION) ========== -->
+        <section id="experience">
+            <h2 class="section-title">Experience</h2>
+            
+            <!-- Experience Item 1 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">📐 Mathematics Teacher & Competition Coach</div>
+                        <div class="accordion-subtitle">Elite Schools in Tehran | 2020 – Present</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Taught advanced mathematics to talented students preparing for international competitions (IMSO, Australia Mathematics Competition)</li>
+                        <li>Focused on developing problem-solving skills and mathematical thinking</li>
+                        <li>Prepared students for high-level academic challenges</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Experience Item 2 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🧑‍🏫 Private Mathematics Tutor</div>
+                        <div class="accordion-subtitle">All Levels: Elementary to University | 2018 – Present</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>One-on-one and group tutoring in mathematics</li>
+                        <li>Focused on building deep understanding rather than memorization</li>
+                        <li>Worked with students from diverse backgrounds and learning styles</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Experience Item 3 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🎯 Academic Counselor</div>
+                        <div class="accordion-subtitle">University Entrance Exam Preparation | 2020 – 2023</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Guided high school students through university major selection for the National Entrance Exam (Konkour)</li>
+                        <li>Provided personalized study plans and academic roadmaps</li>
+                        <li>Organized workshops and webinars on educational pathways</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Experience Item 4 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🔬 University Scientific Society Member</div>
+                        <div class="accordion-subtitle">Amirkabir University of Technology | 2017 – 2020</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Active member of the university-wide Scientific Association</li>
+                        <li>Organized academic events, workshops, and seminars</li>
+                        <li>Contributed to building a collaborative academic community</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SKILLS SECTION (TAG CLOUD) ========== -->
+        <section id="skills">
+            <h2 class="section-title">What I Work With</h2>
+            <p class="section-subtitle">Tools, languages, and things I'm learning</p>
+            
+            <div class="skill-category">
+                <h3>Programming & Development</h3>
+                <div class="skills-cloud">
+                    <span class="skill-tag primary">Python</span>
+                    <span class="skill-tag">MATLAB</span>
+                    <span class="skill-tag">Git & GitHub</span>
+                    <span class="skill-tag primary">Flask</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>Data & AI</h3>
+                <div class="skills-cloud">
+                    <span class="skill-tag secondary">NumPy & Pandas</span>
+                    <span class="skill-tag secondary">Scikit-learn</span>
+                    <span class="skill-tag secondary">Machine Learning</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>Foundations</h3>
+                <div class="skills-cloud">
+                    <span class="skill-tag">Algorithms & Data Structures</span>
+                    <span class="skill-tag">Statistics & Probability</span>
+                    <span class="skill-tag">Mathematical Modeling</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>General Tools</h3>
+                <div class="skills-cloud">
+                    <span class="skill-tag">Microsoft Office (ICDL Certified)</span>
+                    <span class="skill-tag">Google Workspace</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>Languages</h3>
+                <div class="skills-cloud">
+                    <span class="skill-tag primary">Persian (Native)</span>
+                    <span class="skill-tag primary">English (Fluent)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== ACHIEVEMENTS SECTION (ACCORDION) ========== -->
+        <section id="achievements">
+            <h2 class="section-title">Achievements</h2>
+            
+            <!-- Achievement Item 1 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🎓 Academic Excellence</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Admitted to Sharif University M.Sc. program via <strong>Exceptional Talents</strong></li>
+                        <li>Graduated with <strong>Grade A (Excellent)</strong> in Applied Mathematics</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Achievement Item 2 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🥇 National Physics Olympiad</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Qualified for <strong>Stage 1 and Stage 2</strong> of the Iranian Physics Olympiad</li>
+                        <li>Experience in high-level scientific competition and teamwork</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Achievement Item 3 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🦘 Mathematics Competitions</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Achieved top results in <strong>Kangaroo Mathematics Competition</strong> (high school level)</li>
+                        <li>Won awards in <strong>university-level mathematics contests</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Achievement Item 4 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div>
+                        <div class="accordion-title">🌍 IYPT Team Member</div>
+                    </div>
+                    <div class="accordion-icon">+</div>
+                </div>
+                <div class="accordion-content">
+                    <ul>
+                        <li>Represented my high school in the <strong>International Young Physicists' Tournament (IYPT)</strong></li>
+                        <li>Collaborated with international peers on complex physics problems</li>
+                        <li>Learned to communicate science across cultures</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== LOOKING FORWARD SECTION ========== -->
+        <section id="future">
+            <h2 class="section-title">Where I'm Headed</h2>
+            <div class="about-content">
+                <p>I know what draws me: solving real problems with data and code.</p>
+                
+                <p>Right now, I'm building that foundation—learning machine learning, exploring backend development, working on small projects in areas I care about like healthcare, education, and finance. Each project teaches me something new, not just about the technology but about what kind of work makes me come alive.</p>
+                
+                <p>My goal is clear: to create something meaningful. Whether it's a tool that helps doctors make better diagnoses, a platform that makes learning more accessible, or a system that brings clarity to financial complexity—I want to build things that matter.</p>
+                
+                <p>I'm taking it step by step. Learning deeply, building carefully, staying curious. The path isn't always straight, but the direction is clear. And I'm excited to see where it leads.</p>
+            </div>
+        </section>
+
+        <!-- ========== CONTACT SECTION ========== -->
+        <section id="contact">
+            <h2 class="section-title">Let's Connect</h2>
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <p><strong>📧 Email:</strong> aida.sahi@gmail.com</p>
+                <p><strong>💻 GitHub:</strong> <a href="https://github.com/aidasahi" target="_blank">aidasahi</a></p>
+            </div>
+
+            <!-- Contact Form -->
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Write your message here..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+
+            <!-- Success/Error Message (hidden by default) -->
+            <div id="formMessage" class="form-message"></div>
+
+            <!-- Download Resume Button -->
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="{{ url_for('static', filename='files/resume-fa.pdf') }}" class="download-btn" download>
+                    📄 Download My Resume (Persian/Farsi Version - PDF)
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <p>© 2025 Aida Asgharzadeh Donighi. Built with curiosity and code.</p>
+    </footer>
+
+    <!-- Link to JavaScript file -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 </body>
 </html>
